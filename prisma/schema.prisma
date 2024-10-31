@@ -1,0 +1,100 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String   @db.VarChar(255)
+  username  String   @db.VarChar(255)
+  password  String   @db.VarChar(255)
+  role      RoleUser @default(Barista)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Order Order[]
+}
+
+enum RoleUser {
+  SuperAdmin
+  Barista
+  Cashier
+  Customer
+}
+
+model CategoryProduct {
+  id        String   @id @default(uuid())
+  name      String   @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Product Product[]
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  categoryId  String
+  name        String   @db.VarChar(255)
+  description String?  @db.Text
+  price       Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  category CategoryProduct @relation(fields: [categoryId], references: [id])
+
+  OrderItem OrderItem[]
+}
+
+model Order {
+  id        String   @id @default(uuid())
+  userId    String
+  paymentId String?  @unique
+  date      DateTime
+  invoice   String   @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User        @relation(fields: [userId], references: [id])
+  payment   Payment?
+  OrderItem OrderItem[]
+}
+
+model OrderItem {
+  id        String   @id @default(uuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  product Product @relation(fields: [productId], references: [id])
+  order   Order   @relation(fields: [orderId], references: [id])
+}
+
+model Payment {
+  id          String        @id @default(uuid())
+  orderId     String        @unique
+  amount      Float
+  paymentDate DateTime      @default(now())
+  status      StatusPayment @default(Pending)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  order       Order         @relation(fields: [orderId], references: [id])
+}
+
+enum StatusPayment {
+  Pending
+  Complete
+  Failed
+}
