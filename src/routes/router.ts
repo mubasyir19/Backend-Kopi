@@ -25,7 +25,7 @@ router.get('/product', getAllProducts);
 router.get('/product/:id', getProductById);
 router.post('/product/add', addProduct);
 
-router.post('/order', getListOrders);
+router.get('/order', getListOrders);
 router.post('/order/add', createOrder);
 
 router.post('/payment/add', createPayment);
