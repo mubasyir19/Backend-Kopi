@@ -5,7 +5,19 @@ const prisma = new PrismaClient();
 
 export const getAllCategories = async (req: Request, res: Response): Promise<Response | any> => {
   try {
-    const categories = await prisma.categoryProduct.findMany();
+    const categories = await prisma.categoryProduct.findMany({
+      select: {
+        id: true,
+        name: true,
+        Product: {
+          select: {
+            name: true,
+            description: true,
+            price: true,
+          },
+        },
+      },
+    });
 
     return res.status(200).json({
       status: 200,
@@ -27,6 +39,17 @@ export const getCategoryById = async (req: Request, res: Response): Promise<Resp
     const category = await prisma.categoryProduct.findFirst({
       where: {
         id,
+      },
+      select: {
+        id: true,
+        name: true,
+        Product: {
+          select: {
+            name: true,
+            description: true,
+            price: true,
+          },
+        },
       },
     });
 
