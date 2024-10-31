@@ -3,12 +3,8 @@ import { login, register } from '../controllers/auth/auth.controller';
 import { addProduct, getAllProducts, getProductById } from '../controllers/product/product.controller';
 import { addCategory, getAllCategories, getCategoryById } from '../controllers/category/category.controller';
 import { getUserById } from '../controllers/user/user.controller';
-import {
-  createOrder,
-  createPayment,
-  getListOrders,
-  updatePaymentStatus,
-} from '../controllers/transaction/transaction.controller';
+import { createOrder, getListOrders } from '../controllers/order/order.controller';
+import { createPayment, updatePaymentStatus } from '../controllers/payment/payment.controller';
 
 const router = Router();
 
