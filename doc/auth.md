@@ -16,13 +16,15 @@ Request Body :
 Response Body :
 
 ```json
-"status": 201,
-    "message": "login successfully",
-    "data": {
-        "id": "1f1b5f38-59ca-42ca-9a3b-51b96c7bb89f",
-        "role": "SuperAdmin",
-        "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjFmMWI1ZjM4LTU5Y2EtNDJjYS05YTNiLTUxYjk2YzdiYjg5ZiIsIm5hbWUiOiJNYWhkeSBNdWJhc3lpciIsInVzZXJuYW1lIjoibWFoZHkiLCJyb2xlIjoiU3VwZXJBZG1pbiIsImlhdCI6MTczMDM5MTgxN30.FAnL2NR-2mFS6GMw9xQeGQ-QGj1UEXhMVEFCFA2kF_o"
-    }
+{
+  "status": 201,
+  "message": "login successfully",
+  "data": {
+    "id": "1f1b5f38-59ca-42ca-9a3b-51b96c7bb89f",
+    "role": "SuperAdmin",
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjFmMWI1ZjM4LTU5Y2EtNDJjYS05YTNiLTUxYjk2YzdiYjg5ZiIsIm5hbWUiOiJNYWhkeSBNdWJhc3lpciIsInVzZXJuYW1lIjoibWFoZHkiLCJyb2xlIjoiU3VwZXJBZG1pbiIsImlhdCI6MTczMDM5MTgxN30.FAnL2NR-2mFS6GMw9xQeGQ-QGj1UEXhMVEFCFA2kF_o"
+  }
+}
 ```
 
 ## Register
