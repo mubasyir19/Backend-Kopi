@@ -121,3 +121,40 @@ export const createOrder = async (req: Request, res: Response): Promise<Response
     });
   }
 };
+
+export const checkoutOrder = async (req: Request, res: Response): Promise<Response | any> => {
+  const { orderId, amountPaid } = req.body;
+
+  const checkOrderItem = await prisma.orderItem.findMany({
+    where: { orderId },
+  });
+
+  const totalAmount = checkOrderItem.reduce((sum, item) => sum + item.price, 0);
+
+  if (amountPaid < totalAmount) {
+    return res.status(500).json({
+      status: 500,
+      message: 'Insufficient amount paid',
+      data: null,
+    });
+  }
+
+  const payment = await prisma.payment.create({
+    data: {
+      orderId,
+      amount: totalAmount,
+      status: 'Complete',
+    },
+  });
+
+  await prisma.order.update({
+    where: { id: orderId },
+    data: { status: 'Paid' },
+  });
+
+  return res.status(200).json({
+    status: 200,
+    message: 'Success payment',
+    data: payment,
+  });
+};

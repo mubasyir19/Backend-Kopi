@@ -56,17 +56,23 @@ model Product {
 }
 
 model Order {
-  id        String   @id @default(uuid())
+  id        String      @id @default(uuid())
   userId    String
-  paymentId String?  @unique
+  paymentId String?     @unique
   date      DateTime
-  invoice   String   @db.VarChar(255)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  invoice   String      @db.VarChar(255)
+  status    StatusOrder @default(Unpaid)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 
   user      User        @relation(fields: [userId], references: [id])
   payment   Payment?
   OrderItem OrderItem[]
+}
+
+enum StatusOrder {
+  Paid
+  Unpaid
 }
 
 model OrderItem {
