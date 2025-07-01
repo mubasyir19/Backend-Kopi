@@ -22,7 +22,9 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Order Order[]
+  orders Order[]
+
+  Cart Cart[]
 }
 
 enum RoleUser {
@@ -38,7 +40,7 @@ model CategoryProduct {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Product Product[]
+  products Product[]
 }
 
 model Product {
@@ -47,12 +49,27 @@ model Product {
   name        String   @db.VarChar(255)
   description String?  @db.Text
   price       Float
+  image       String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   category CategoryProduct @relation(fields: [categoryId], references: [id])
 
-  OrderItem OrderItem[]
+  orderItems OrderItem[]
+  carts      Cart[]
+}
+
+model Cart {
+  id         String   @id @default(uuid())
+  userId     String
+  productId  String
+  quantity   Int      @db.Int
+  totalPrice Decimal  @db.Decimal()
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user     User    @relation(fields: [userId], references: [id])
+  products Product @relation(fields: [productId], references: [id])
 }
 
 model Order {
@@ -60,14 +77,14 @@ model Order {
   userId    String
   paymentId String?     @unique
   date      DateTime
-  invoice   String      @db.VarChar(255)
+  invoice   String      @unique @db.VarChar(255)
   status    StatusOrder @default(Unpaid)
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
 
-  user      User        @relation(fields: [userId], references: [id])
-  payment   Payment?
-  OrderItem OrderItem[]
+  user       User        @relation(fields: [userId], references: [id])
+  payment    Payment?
+  orderItems OrderItem[]
 }
 
 enum StatusOrder {
@@ -89,14 +106,22 @@ model OrderItem {
 }
 
 model Payment {
-  id          String        @id @default(uuid())
-  orderId     String        @unique
-  amount      Float
-  paymentDate DateTime      @default(now())
-  status      StatusPayment @default(Pending)
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  order       Order         @relation(fields: [orderId], references: [id])
+  id            String        @id @default(uuid())
+  orderId       String        @unique
+  amount        Float
+  paymentDate   DateTime      @default(now())
+  status        StatusPayment @default(Pending)
+  paymentType   PaymentType   @default(Cash)
+  qrisReference String?       @db.VarChar(255)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  
+  order         Order         @relation(fields: [orderId], references: [id])
+}
+
+enum PaymentType {
+  Cash
+  QRIS
 }
 
 enum StatusPayment {
