@@ -9,7 +9,7 @@ export const getAllCategories = async (req: Request, res: Response): Promise<Res
       select: {
         id: true,
         name: true,
-        Product: {
+        products: {
           select: {
             name: true,
             description: true,
@@ -43,7 +43,7 @@ export const getCategoryById = async (req: Request, res: Response): Promise<Resp
       select: {
         id: true,
         name: true,
-        Product: {
+        products: {
           select: {
             name: true,
             description: true,

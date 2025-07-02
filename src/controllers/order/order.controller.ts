@@ -11,7 +11,7 @@ export const getListOrders = async (req: Request, res: Response): Promise<Respon
         invoice: true,
         userId: true,
         date: true,
-        OrderItem: {
+        orderItems: {
           select: {
             id: true,
             orderId: true,
@@ -89,7 +89,7 @@ export const createOrder = async (req: Request, res: Response): Promise<Response
         userId,
         invoice: `KBB-${Math.floor(100000 + Math.random() * 900000)}`,
         date: new Date(),
-        OrderItem: {
+        orderItems: {
           create: items.map((item: { productId: string; quantity: number }) => {
             const productPrice = productPriceMap[item.productId];
             const totalPrice = productPrice * item.quantity; // Menghitung total price
@@ -103,7 +103,7 @@ export const createOrder = async (req: Request, res: Response): Promise<Response
         },
       },
       include: {
-        OrderItem: true,
+        orderItems: true,
       },
     });
 
