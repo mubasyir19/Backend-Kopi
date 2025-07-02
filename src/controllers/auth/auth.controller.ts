@@ -34,41 +34,49 @@ export const register = async (req: Request, res: Response): Promise<Response | 
   const { name, username, password, role } = req.body;
 
   try {
-    const checkUser = await prisma.user.findFirst({
-      where: {
-        username,
-      },
+    // const checkUser = await prisma.user.findFirst({
+    //   where: {
+    //     username,
+    //   },
+    // });
+
+    // if (checkUser) {
+    //   return res.status(400).json({
+    //     status: 400,
+    //     message: 'An account has been registered',
+    //     data: null,
+    //   });
+    // } else {
+    //   const salt = await bcrypt.genSalt();
+    //   const hashedPassword = await bcrypt.hash(password, salt);
+
+    //   const newUser = await prisma.user.create({
+    //     data: {
+    //       name: name,
+    //       username: username,
+    //       password: hashedPassword,
+    //       role: role,
+    //     },
+    //   });
+
+    //   return res.status(201).json({
+    //     status: 201,
+    //     message: 'an account successfully register',
+    //     data: newUser,
+    //   });
+    // }
+
+    const newUser = await authSerive.register({ name, username, password, role });
+
+    return res.status(201).json({
+      status: 201,
+      message: 'an account successfully register',
+      data: newUser,
     });
-
-    if (checkUser) {
-      return res.status(400).json({
-        status: 400,
-        message: 'An account has been registered',
-        data: null,
-      });
-    } else {
-      const salt = await bcrypt.genSalt();
-      const hashedPassword = await bcrypt.hash(password, salt);
-
-      const newUser = await prisma.user.create({
-        data: {
-          name: name,
-          username: username,
-          password: hashedPassword,
-          role: role,
-        },
-      });
-
-      return res.status(201).json({
-        status: 201,
-        message: 'an account successfully register',
-        data: newUser,
-      });
-    }
-  } catch (error) {
+  } catch (error: any) {
     return res.status(500).json({
       status: 500,
-      message: 'failed register account',
+      message: error.message,
       data: null,
     });
   }

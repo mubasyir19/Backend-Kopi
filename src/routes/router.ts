@@ -5,6 +5,8 @@ import { addCategory, getAllCategories, getCategoryById } from '../controllers/c
 import { getUserById } from '../controllers/user/user.controller';
 import { createOrder, getListOrders } from '../controllers/order/order.controller';
 import { createPayment, updatePaymentStatus } from '../controllers/payment/payment.controller';
+import { validateRequest } from '../middleware/validation.middleware';
+import { authValidation } from '../utils/validation';
 
 const router = Router();
 
@@ -15,7 +17,7 @@ router.get('/hello', (req: Request, res: Response) => {
 router.get('/user/:id', getUserById);
 
 router.post('/auth/login', login);
-router.post('/auth/register', register);
+router.post('/auth/register', validateRequest({ body: authValidation.register }), register);
 
 router.get('/category', getAllCategories);
 router.get('/category/:id', getCategoryById);
