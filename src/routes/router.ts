@@ -16,7 +16,7 @@ router.get('/hello', (req: Request, res: Response) => {
 
 router.get('/user/:id', getUserById);
 
-router.post('/auth/login', login);
+router.post('/auth/login', validateRequest({ body: authValidation.login }), login);
 router.post('/auth/register', validateRequest({ body: authValidation.register }), register);
 
 router.get('/category', getAllCategories);

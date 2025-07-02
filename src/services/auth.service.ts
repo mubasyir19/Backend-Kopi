@@ -28,7 +28,7 @@ class AuthService {
 
   async login(data: LoginData) {
     if (!data.username) {
-      throw new Error('Email is required');
+      throw new Error('Username is required');
     }
 
     if (!data.password) {

@@ -1,25 +1,40 @@
 import { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcryptjs';
-// import jwt from 'jsonwebtoken';
 import { authSerive } from '../../services/auth.service';
-
-const prisma = new PrismaClient();
+import { ResponseUtil } from '../../utils/response';
 
 export const login = async (req: Request, res: Response): Promise<Response | any> => {
   const { username, password } = req.body;
 
+  if (!username || username.trim() === '') {
+    return res.status(400).json(ResponseUtil.error('Username is required'));
+  }
+
+  if (!password || password.trim() === '') {
+    return res.status(400).json(ResponseUtil.error('Password is required'));
+  }
+
   try {
     const handleLogin = await authSerive.login({ username, password });
-    return res.status(200).json({
-      status: 200,
-      message: 'login successfully',
-      data: {
-        id: handleLogin.user.id,
-        role: handleLogin.user.name,
-        access_token: handleLogin.jwtToken,
-      },
-    });
+    res.status(400).json(
+      ResponseUtil.success(
+        {
+          id: handleLogin.user.id,
+          role: handleLogin.user.name,
+          access_token: handleLogin.jwtToken,
+        },
+        'Login successfully'
+      )
+    );
+
+    // return res.status(200).json({
+    //   status: 200,
+    //   message: 'login successfully',
+    //   data: {
+    // id: handleLogin.user.id,
+    // role: handleLogin.user.name,
+    // access_token: handleLogin.jwtToken,
+    //   },
+    // });
   } catch (error: any) {
     console.log('Error = ', error);
     return res.status(500).json({
