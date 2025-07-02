@@ -1,0 +1,174 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "API Coffee",
+    "description": "API for Coffee App"
+  },
+  "servers": [
+    {
+      "url": "http://api.example.com/v1"
+    }
+  ],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "summary": "Login user",
+        "operationId": "createResource",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "login successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessLogin"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "summary": "Register user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Register"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "an account successfully register",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessRegister"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Resource": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Contoh Sumber Daya"
+          },
+          "description": {
+            "type": "string",
+            "example": "Ini adalah deskripsi dari contoh sumber daya."
+          }
+        },
+        "required": ["id", "name"]
+      },
+      "Login": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "user1"
+          },
+          "password": {
+            "type": "string",
+            "example": "secret123"
+          }
+        },
+        "required": ["name"]
+      },
+      "SuccessLogin": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "example": 201
+          },
+          "message": {
+            "type": "string",
+            "example": "login successfully"
+          },
+          "data": {
+            "type": "object",
+            "example": {
+              "id": "1f1b5f38-59ca-42ca-9a3b-51b96c7bb89f",
+              "role": "Customer",
+              "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjFmMWI1ZjM4LTU5Y2EtNDJjYS05YTNiLTUxYjk2YzdiYjg5ZiIsIm5hbWUiOiJNYWhkeSBNdWJhc3lpciIsInVzZXJuYW1lIjoibWFoZHkiLCJyb2xlIjoiU3VwZXJBZG1pbiIsImlhdCI6MTczMDM5MTgxN30.FAnL2NR-2mFS6GMw9xQeGQ-QGj1UEXhMVEFCFA2kF_o"
+            }
+          }
+        }
+      },
+      "Register": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Pengguna 1"
+          },
+          "username": {
+            "type": "string",
+            "example": "user1"
+          },
+          "password": {
+            "type": "string",
+            "example": "secret123"
+          },
+          "role": {
+            "type": "string",
+            "example": "Customer"
+          }
+        },
+        "required": ["name", "username", "password", "role"]
+      },
+      "SuccessRegister": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "example": 201
+          },
+          "message": {
+            "type": "string",
+            "example": "login successfully"
+          },
+          "data": {
+            "type": "object",
+            "example": {
+              "id": "cf1c3ea8-ebbe-4ee7-8389-57952ef4e838",
+              "name": "Pengguna 1",
+              "username": "user1",
+              "password": "$2a$10$mR4ARXE9f.iY9Ul6G.NSFefEGL7gU3i0xREKHpoTmOi5EofTJ6.R2",
+              "role": "Customer",
+              "createdAt": "2024-10-31T16:23:12.011Z",
+              "updatedAt": "2024-10-31T16:23:12.011Z"
+            }
+          }
+        }
+      }
+    }
+  }
+}
