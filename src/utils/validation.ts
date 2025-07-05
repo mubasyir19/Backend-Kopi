@@ -2,16 +2,19 @@ import { z } from 'zod';
 
 export const authValidation = {
   login: z.object({
-    username: z.string().min(3),
-    password: z.string().min(6),
+    username: z.string().nonempty('Username is required').min(3),
+    password: z.string().nonempty('Password is required').min(6),
   }),
   register: z.object({
-    name: z.string().min(1, 'Name is required'),
-    username: z.string().min(3, 'Username must be at least 3 characters'),
-    password: z.string().min(6, 'Password must be at least 6 characters'),
-    role: z.string().refine((val) => ['SuperAdmin', 'Barista', 'Cashier', 'Customer'].includes(val), {
-      message: 'Role is invalid. Please choose a valid role.',
-    }),
+    name: z.string().nonempty('Name is required').min(1, 'Name is required'),
+    username: z.string().nonempty('Username is required').min(3, 'Username must be at least 3 characters'),
+    password: z.string().nonempty('Password is required').min(6, 'Password must be at least 6 characters'),
+    role: z
+      .string()
+      .nonempty('Role is required')
+      .refine((val) => ['SuperAdmin', 'Barista', 'Cashier', 'Customer'].includes(val), {
+        message: 'Role is invalid. Please choose a valid role.',
+      }),
   }),
 };
 

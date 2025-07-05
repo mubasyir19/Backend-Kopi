@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express';
-import { login, register } from '../controllers/auth/auth.controller';
+import { authController } from '../controllers/auth/auth.controller';
 import { addProduct, getAllProducts, getProductById } from '../controllers/product/product.controller';
 import { addCategory, getAllCategories, getCategoryById } from '../controllers/category/category.controller';
 import { getUserById } from '../controllers/user/user.controller';
@@ -16,8 +16,8 @@ router.get('/hello', (req: Request, res: Response) => {
 
 router.get('/user/:id', getUserById);
 
-router.post('/auth/login', validateRequest({ body: authValidation.login }), login);
-router.post('/auth/register', validateRequest({ body: authValidation.register }), register);
+router.post('/auth/login', validateRequest({ body: authValidation.login }), authController.login);
+router.post('/auth/register', validateRequest({ body: authValidation.register }), authController.register);
 
 router.get('/category', getAllCategories);
 router.get('/category/:id', getCategoryById);

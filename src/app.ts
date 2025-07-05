@@ -5,6 +5,7 @@ import router from './routes/router';
 import morgan from 'morgan';
 import swaggerUI from 'swagger-ui-express';
 import swaggerDocument from '../docs/swagger.json';
+import { errorMiddleware } from './middleware/error.middleware';
 
 const app: Express = express();
 const port = process.env.PORT || 5000;
@@ -23,5 +24,7 @@ app.use('/api', router);
 app.get('/', (req: Request, res: Response) => {
   res.send('Welcome');
 });
+
+app.use(errorMiddleware);
 
 export default app;
